@@ -76,7 +76,7 @@ class CalculatorFragment : Fragment() {
             }
 
             buttonAC.setOnClickListener {
-               inputPlace.text = ""
+                inputPlace.text = "0"
             }
 
             buttonBraces.setOnClickListener {
@@ -86,8 +86,10 @@ class CalculatorFragment : Fragment() {
     }
 
     private fun appendSymbol(symbol: String) {
+        if (binding.inputPlace.text[0] == '0') {
+            binding.inputPlace.text = ""
+        }
         binding.inputPlace.append(symbol)
-
     }
 
 
