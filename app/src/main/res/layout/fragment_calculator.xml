@@ -56,11 +56,11 @@
             android:text="АС" />
 
         <Button
-            android:id="@+id/button_todo"
+            android:id="@+id/button_backspace"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="TO DO" />
+            android:text="Delete" />
 
         <Button
             android:id="@+id/button_todo2"

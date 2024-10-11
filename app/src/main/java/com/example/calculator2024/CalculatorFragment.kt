@@ -82,6 +82,26 @@ class CalculatorFragment : Fragment() {
             buttonBraces.setOnClickListener {
                 appendSymbol("(")
             }
+
+            buttonBackspace.setOnClickListener {
+                deleteSymbol()
+            }
+        }
+    }
+
+    private fun deleteSymbol() {
+        val inputText = binding.inputPlace.text
+
+        when {
+            inputText.length > 1 -> {
+                binding.inputPlace.text = inputText.dropLast(1)
+                println("OK OK OK OK ")
+                println(binding.inputPlace.text)
+            }
+
+            inputText.length == 1 -> {
+                binding.inputPlace.text = "0"
+            }
         }
     }
 
