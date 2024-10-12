@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.calculator2024.databinding.FragmentCalculatorBinding
-import kotlin.system.exitProcess
 
 class CalculatorFragment : Fragment() {
 
@@ -41,42 +40,42 @@ class CalculatorFragment : Fragment() {
         with(binding) {
 
             button0.setOnClickListener {
-                appendSymbol("0")
+                appendNumber("0")
             }
 
             button1.setOnClickListener {
-                appendSymbol("1")
+                appendNumber("1")
             }
 
             button2.setOnClickListener {
-                appendSymbol("2")
+                appendNumber("2")
             }
 
             button3.setOnClickListener {
-                appendSymbol("3")
+                appendNumber("3")
             }
 
             button4.setOnClickListener {
-                appendSymbol("4")
+                appendNumber("4")
             }
             button5.setOnClickListener {
-                appendSymbol("5")
+                appendNumber("5")
             }
 
             button6.setOnClickListener {
-                appendSymbol("6")
+                appendNumber("6")
             }
 
             button7.setOnClickListener {
-                appendSymbol("7")
+                appendNumber("7")
             }
 
             button8.setOnClickListener {
-                appendSymbol("8")
+                appendNumber("8")
             }
 
             button9.setOnClickListener {
-                appendSymbol("9")
+                appendNumber("9")
             }
 
             buttonAC.setOnClickListener {
@@ -84,7 +83,7 @@ class CalculatorFragment : Fragment() {
             }
 
             buttonBraces.setOnClickListener {
-                appendSymbol("(")
+                appendNumber("(")
             }
 
             buttonBackspace.setOnClickListener {
@@ -92,21 +91,21 @@ class CalculatorFragment : Fragment() {
             }
 
             buttonPlus.setOnClickListener {
-                appendSymbol("+")
+                appendSymbol('+')
             }
 
 
             buttonMinus.setOnClickListener {
-                appendSymbol("-")
+                appendSymbol('-')
             }
 
             buttonX.setOnClickListener {
-                appendSymbol("х")
+                appendSymbol('х')
             }
 
 
             buttonDivide.setOnClickListener {
-                appendSymbol("/")
+                appendSymbol('/')
             }
 
             buttonEqual.setOnClickListener {
@@ -114,7 +113,7 @@ class CalculatorFragment : Fragment() {
             }
 
             buttonDot.setOnClickListener {
-                appendSymbol(".")
+                appendSymbol('.')
             }
 
 
@@ -122,7 +121,6 @@ class CalculatorFragment : Fragment() {
     }
 
     private fun deleteSymbol() {
-
         val inputText = binding.inputPlace.text
         when {
             inputText.length > 1 -> {
@@ -137,17 +135,28 @@ class CalculatorFragment : Fragment() {
         }
     }
 
-    private fun appendSymbol(symbol: String) {
+    private fun appendNumber(symbol: String) {
         if (binding.inputPlace.text[0] == '0') {
+            binding.inputPlace.text = ""
+        }
+        binding.inputPlace.append(symbol)
+    }
+
+    private fun appendSymbol(symbol: Char) {
+
+        val firstChar = binding.inputPlace.text[0]
+        val listSymbols = mutableListOf<Char>('+', '-', 'х', '/', '.')
+
+        if (firstChar == '0') {
             //добавлена проверка на первый символ в строке (если это математический, то сообщение)
-            if (symbol.equals("+") || symbol.equals("х") || symbol.equals("/") || symbol.equals("-")) {
-                Toast.makeText(requireContext(), "Please input the number", Toast.LENGTH_SHORT)
+            if (symbol in listSymbols) {
+                Toast.makeText(requireContext(), "Please input a number", Toast.LENGTH_SHORT)
                     .show()
             } else {
                 binding.inputPlace.text = ""
-                binding.inputPlace.append(symbol)
+                binding.inputPlace.append(symbol.toString())
             }
-        } else binding.inputPlace.append(symbol)
+        } else binding.inputPlace.append(symbol.toString())
     }
 
     override fun onDestroyView() {
