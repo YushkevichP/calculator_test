@@ -150,7 +150,6 @@ class CalculatorFragment : Fragment() {
         } else binding.inputPlace.append(symbol)
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
