@@ -39,6 +39,32 @@ class CalculatorFragment : Fragment() {
     private fun initButtons() {
         with(binding) {
 
+//           val listOfPair =  listOf(
+//                button0 to "0",
+//                button2 to "1",
+//                button3 to "1",
+//                button4 to "1",
+//                button5 to "1",
+//                button6 to "1",
+//                button7 to "1",
+//                button8 to "1",
+//                button9 to "1",
+//                buttonAC to "1",
+//                buttonBackspace to "1",
+//                buttonBraces to "1",
+//                button to "1",
+//                button to "1",
+//                button to "1",
+//                button to "1",
+//                button to "1",
+//                button to "1",
+//            )
+//                .forEach { pair ->
+//                    pair.first.setOnClickListener {
+//                        appendNumber(pair.second)
+//                    }
+//                }
+
             button0.setOnClickListener {
                 appendNumber("0")
             }
@@ -115,8 +141,6 @@ class CalculatorFragment : Fragment() {
             buttonDot.setOnClickListener {
                 appendSymbol('.')
             }
-
-
         }
     }
 
@@ -135,17 +159,25 @@ class CalculatorFragment : Fragment() {
         }
     }
 
-    private fun appendNumber(symbol: String) {
+    private fun appendNumber(number: String) {
         if (binding.inputPlace.text[0] == '0') {
             binding.inputPlace.text = ""
         }
-        binding.inputPlace.append(symbol)
+        binding.inputPlace.append(number)
     }
 
     private fun appendSymbol(symbol: Char) {
 
         val firstChar = binding.inputPlace.text[0]
-        val listSymbols = mutableListOf<Char>('+', '-', 'х', '/', '.')
+        var lastChar = binding.inputPlace.text.last()
+        val listSymbols = mutableListOf('+', '-', 'х', '/', '.')
+        val inputText = binding.inputPlace.text
+
+        if (lastChar in listSymbols) {
+            //проверка, чтоб не могли поставиьт несколько знаков подряд
+            binding.inputPlace.text = inputText.dropLast(1)
+
+        }
 
         if (firstChar == '0') {
             //добавлена проверка на первый символ в строке (если это математический, то сообщение)
