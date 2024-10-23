@@ -32,8 +32,6 @@ class CalculatorFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initButtons()
-
-
     }
 
     private fun initButtons() {
@@ -120,7 +118,6 @@ class CalculatorFragment : Fragment() {
                 appendSymbol('+')
             }
 
-
             buttonMinus.setOnClickListener {
                 appendSymbol('-')
             }
@@ -128,7 +125,6 @@ class CalculatorFragment : Fragment() {
             buttonX.setOnClickListener {
                 appendSymbol('х')
             }
-
 
             buttonDivide.setOnClickListener {
                 appendSymbol('/')
@@ -169,30 +165,48 @@ class CalculatorFragment : Fragment() {
     private fun appendSymbol(symbol: Char) {
 
         val firstChar = binding.inputPlace.text[0]
-        var lastChar = binding.inputPlace.text.last()
+        val lastChar = binding.inputPlace.text.last()
         val listSymbols = mutableListOf('+', '-', 'х', '/', '.')
         val inputText = binding.inputPlace.text
 
+        //проверка, чтоб не могли поставиьт несколько знаков подряд
         if (lastChar in listSymbols) {
-            //проверка, чтоб не могли поставиьт несколько знаков подряд
             binding.inputPlace.text = inputText.dropLast(1)
+        }
+
+        if (symbol == '.') {
+            val lastNumber = inputText.split(Regex("[+\\-х/]")).lastOrNull()
+            if (lastNumber != null && lastNumber.contains('.')) {
+                // Если в последнем числе уже есть точка, не добавлять её
+                Toast.makeText(
+                    requireContext(),
+                    "This number already has a decimal point",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return
+            }
+        }
+
+
+            if (firstChar == '0') {
+                //добавлена проверка на первый символ в строке (если это математический, то сообщение)
+                if (symbol in listSymbols) {
+                    Toast.makeText(requireContext(), "Please input a number", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    binding.inputPlace.text = ""
+                    binding.inputPlace.append(symbol.toString())
+                }
+            } else binding.inputPlace.append(symbol.toString())
 
         }
 
-        if (firstChar == '0') {
-            //добавлена проверка на первый символ в строке (если это математический, то сообщение)
-            if (symbol in listSymbols) {
-                Toast.makeText(requireContext(), "Please input a number", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                binding.inputPlace.text = ""
-                binding.inputPlace.append(symbol.toString())
-            }
-        } else binding.inputPlace.append(symbol.toString())
+        override fun onDestroyView() {
+            super.onDestroyView()
+            _binding = null
+        }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-}
+
+
+
