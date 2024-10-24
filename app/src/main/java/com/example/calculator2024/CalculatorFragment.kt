@@ -32,6 +32,15 @@ class CalculatorFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initButtons()
+
+        with(binding) {
+            resultPlace.text = "Тут будет результат"
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun initButtons() {
@@ -123,7 +132,7 @@ class CalculatorFragment : Fragment() {
             }
 
             buttonX.setOnClickListener {
-                appendSymbol('х')
+                appendSymbol('*')
             }
 
             buttonDivide.setOnClickListener {
@@ -131,7 +140,7 @@ class CalculatorFragment : Fragment() {
             }
 
             buttonEqual.setOnClickListener {
-                // TODO:  equals logic
+                toEqual()
             }
 
             buttonDot.setOnClickListener {
@@ -166,7 +175,7 @@ class CalculatorFragment : Fragment() {
 
         val firstChar = binding.inputPlace.text[0]
         val lastChar = binding.inputPlace.text.last()
-        val listSymbols = mutableListOf('+', '-', 'х', '/', '.')
+        val listSymbols = mutableListOf('+', '-', '*', '/', '.')
         val inputText = binding.inputPlace.text
 
         //проверка, чтоб не могли поставиьт несколько знаков подряд
@@ -175,37 +184,44 @@ class CalculatorFragment : Fragment() {
         }
 
         if (symbol == '.') {
-            val lastNumber = inputText.split(Regex("[+\\-х/]")).lastOrNull()
+            val lastNumber = inputText.split(Regex("[+\\-*/]")).lastOrNull()
+
             if (lastNumber != null && lastNumber.contains('.')) {
                 // Если в последнем числе уже есть точка, не добавлять её
                 Toast.makeText(
                     requireContext(),
-                    "This number already has a decimal point",
+                    "This number already has a dot",
                     Toast.LENGTH_SHORT
                 ).show()
                 return
             }
         }
 
+        if (firstChar == '0') {
+            //добавлена проверка на первый символ в строке (если это математический, то сообщение)
+            if (symbol in listSymbols) {
+                Toast.makeText(requireContext(), "Please input a number", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                binding.inputPlace.text = ""
+                binding.inputPlace.append(symbol.toString())
+            }
+        } else binding.inputPlace.append(symbol.toString())
+    }
 
-            if (firstChar == '0') {
-                //добавлена проверка на первый символ в строке (если это математический, то сообщение)
-                if (symbol in listSymbols) {
-                    Toast.makeText(requireContext(), "Please input a number", Toast.LENGTH_SHORT)
-                        .show()
-                } else {
-                    binding.inputPlace.text = ""
-                    binding.inputPlace.append(symbol.toString())
-                }
-            } else binding.inputPlace.append(symbol.toString())
+    private fun toEqual() {
+        val workString = binding.inputPlace.text.toString()
 
-        }
-
-        override fun onDestroyView() {
-            super.onDestroyView()
-            _binding = null
+        try {
+            val finalResult = Calculator().calculateNoBraces(workString)
+            binding.resultPlace.text = finalResult.toString()
+            binding.inputPlace.text = finalResult.toString()
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "На ноль нельзя делить!!!!", Toast.LENGTH_SHORT)
+                .show()
         }
     }
+}
 
 
 
