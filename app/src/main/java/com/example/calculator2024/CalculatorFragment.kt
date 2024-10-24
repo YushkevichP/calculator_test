@@ -113,6 +113,7 @@ class CalculatorFragment : Fragment() {
 
             buttonAC.setOnClickListener {
                 inputPlace.text = "0"
+                resultPlace.text = "0"
             }
 
             buttonBraces.setOnClickListener {
