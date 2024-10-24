@@ -18,18 +18,15 @@ class Calculator {
         val listSigns = toListSigns(text).toMutableList()
 
         while (listSigns.isNotEmpty()) {
-
             val index = getIndexOperation(listSigns)
             val left = listNumbers.removeAt(index).toDouble()
             val right = listNumbers.removeAt(index).toDouble()
             val operation = listSigns.removeAt(index)
             val result = calculateOneOperation(left, operation, right)
             listNumbers.add(index, result.toString())
-
         }
 
         return listNumbers.last().toDouble()
-
     }
 
     private fun toListSigns(text: String): List<String> {
@@ -45,7 +42,6 @@ class Calculator {
     }
 
     private fun getIndexOperation(list: List<String>): Int {
-
         var index = -1
         var currentPriority = -1
 
